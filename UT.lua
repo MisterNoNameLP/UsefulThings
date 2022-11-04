@@ -18,7 +18,7 @@
 --[[UsefullThings libary
 	
 ]]
-local UT = {version = "v0.8.7"}
+local UT = {version = "v0.8.8"}
 
 function UT.getVersion()
 	return UT.version
@@ -94,10 +94,10 @@ end
 	This is a modified "Universal tostring" routine from "lua-users.org".
 	Original source code: <http://lua-users.org/wiki/TableSerialization>
 ]]
-function UT.tostring(var, lineBreak, indent, done, internalRun) 
+function UT.tostring(var, lineBreak, indent, serialize, done, internalRun) 
 	if internalRun == false or internalRun == nil then
 		if type(var) == "table" then
-			UT.tostring(var, lineBreak, indent, done, true)
+			UT.tostring(var, lineBreak, indent, serialize, done, true)
 		else
 			return tostring(var)
 		end
@@ -131,7 +131,7 @@ function UT.tostring(var, lineBreak, indent, done, internalRun)
 				else
 					table.insert(sb, "[" .. tostring(key) .. "] = {");
 				end
-				table.insert(sb, UT.tostring(value, lineBreak, indent + 2, done, true))
+				table.insert(sb, UT.tostring(value, lineBreak, indent + 2, serialize, done, true))
 				if lineBreak then
 					table.insert(sb, string.rep (" ", indent)) -- indent it
 					table.insert(sb, "}," .. lbString);
@@ -153,7 +153,11 @@ function UT.tostring(var, lineBreak, indent, done, internalRun)
 					key = "'" .. key .. "'"
 				end
 				if type(value) ~= "boolean" and type(value) ~= "number" then
+					if serialize then
+						value = value:gsub("\n", "\\n")
+					end
 					table.insert(sb, string.format("%s = \"%s\"," .. lbString, "[" .. tostring (key) .. "]", tostring(value)))
+					
 				else
 					table.insert(sb, string.format("%s = %s," .. lbString, "[" .. tostring (key) .. "]", tostring(value)))
 				end
