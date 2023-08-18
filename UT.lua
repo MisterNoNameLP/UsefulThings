@@ -18,7 +18,7 @@
 --[[UsefullThings libary
 	
 ]]
-local UT = {version = "v0.8.8"}
+local UT = {version = "v0.9"}
 
 function UT.getVersion()
 	return UT.version
@@ -205,6 +205,13 @@ function UT.randomString(length, charset)
     end
 
     return table.concat(randomTable)
+end
+
+function UT.exec(command)
+	local outputStream = io.popen(command)
+	local outputString = outputStream:read("*a"):sub(0, -2)
+	outputStream:close()
+	return outputString
 end
 
 return UT
