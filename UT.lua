@@ -18,7 +18,7 @@
 --[[UsefullThings libary
 	
 ]]
-local UT = {version = "v0.9.1"}
+local UT = {version = "v0.9.2"}
 
 function UT.getVersion()
 	return UT.version
@@ -33,15 +33,12 @@ function UT.parseArgs(...) --returns the first non nil parameter.
 end
 
 function UT.seperatePath(path) --seperates a data path ["./DIR/FILE.ENDING"] into the dir path ["./DIR/"], the file name ["FILE"], and the file ending [".ENDING" or nil]
-	local filenameDotCount = 0
 	if string.sub(path, #path) == "/" then
 		return path
 	end
-	
-	
-	
 	local dir, fileName, fileEnd = "", "", nil
 	local tmpLatest = ""
+	local filenameDotCount = 0
 	for s in string.gmatch(tostring(path), "[^/]+") do
 		tmpLatest = s
 	end
